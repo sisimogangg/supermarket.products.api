@@ -79,5 +79,8 @@ func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int) (*mode
 			product = p
 		}
 	}
+	if product.ID == 0 {
+		return nil, nil
+	}
 	return &product, nil
 }

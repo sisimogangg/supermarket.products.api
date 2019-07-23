@@ -31,5 +31,9 @@ func (s *productService) GetProductByID(ctx context.Context, productID int) (*mo
 	if err != nil {
 		return nil, err
 	}
+
+	if p == nil {
+
+	}
 	return p, nil
 }
