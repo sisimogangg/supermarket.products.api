@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/sisimogangg/supermarket.products.api/product"
@@ -10,16 +11,17 @@ import (
 )
 
 type productHandler struct {
-	ProductService product.Service
+	productService product.Service
 }
 
 //NewProductHandler creates a new instance of the product controller
 func NewProductHandler(router *mux.Router, service product.Service) {
 	handler := &productHandler{
-		ProductService: service,
+		productService: service,
 	}
 
 	router.HandleFunc("/api/products", handler.allProducts).Methods("GET")
+	router.HandleFunc("/api/product/{id}", handler.getProductByID).Methods("GET")
 
 }
 
@@ -29,7 +31,7 @@ func (h *productHandler) allProducts(w http.ResponseWriter, r *http.Request) {
 		ctx = context.Background()
 	}
 
-	products, err := h.ProductService.AllProducts(ctx)
+	products, err := h.productService.AllProducts(ctx)
 	if err != nil {
 		u.Respond(w, u.Message(false, err.Error()))
 	}
@@ -41,11 +43,26 @@ func (h *productHandler) allProducts(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *productHandler) productByID(w http.ResponseWriter, r *http.Request) {
+func (h *productHandler) getProductByID(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	productID, err := strconv.Atoi(params["id"])
+	if err != nil {
+		u.Respond(w, u.Message(false, err.Error()))
+	}
+
 	ctx := r.Context()
 	if ctx != nil {
 		ctx = context.Background()
 	}
 
-	product, err := h.productByID(ctx,);
+	product, err := h.productService.GetProductByID(ctx, productID)
+	if err != nil {
+		u.Respond(w, u.Message(false, err.Error()))
+	}
+
+	resp := u.Message(true, "success")
+	resp["product"] = product
+
+	u.Respond(w, resp)
+
 }

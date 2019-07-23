@@ -41,7 +41,7 @@ var products = [...]models.Product{
 		Promotion: "",
 	},
 	models.Product{
-		ID:       1,
+		ID:       3,
 		ImageURL: "https://images.unsplash.com/photo-1560769680-ba2f3767c785?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjExMDk0fQ&auto=format&fit=crop&w=700&q=80",
 		Name:     "Coconut",
 		Price: struct {
