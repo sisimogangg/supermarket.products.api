@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/sisimogangg/supermarket.products.api/controller"
-	_repo "github.com/sisimogangg/supermarket.products.api/product/repository"
-	_service "github.com/sisimogangg/supermarket.products.api/product/service"
+	_repo "github.com/sisimogangg/supermarket.products.api/repository"
+	_service "github.com/sisimogangg/supermarket.products.api/service"
 )
 
 func init() {

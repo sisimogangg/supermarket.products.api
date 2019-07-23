@@ -6,16 +6,16 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/sisimogangg/supermarket.products.api/product"
+	"github.com/sisimogangg/supermarket.products.api/service"
 	u "github.com/sisimogangg/supermarket.products.api/utils"
 )
 
 type productHandler struct {
-	productService product.Service
+	productService service.Service
 }
 
 //NewProductHandler creates a new instance of the product controller
-func NewProductHandler(router *mux.Router, service product.Service) {
+func NewProductHandler(router *mux.Router, service service.Service) {
 	handler := &productHandler{
 		productService: service,
 	}

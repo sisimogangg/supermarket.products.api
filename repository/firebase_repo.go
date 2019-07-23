@@ -2,9 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"log"
 
 	"github.com/sisimogangg/supermarket.products.api/models"
-	"github.com/sisimogangg/supermarket.products.api/product"
 )
 
 type firebaseRepo struct{}
@@ -58,7 +60,7 @@ var products = [...]models.Product{
 }
 
 // NewFirebaseRepo defines a constructor for firebaserepo
-func NewFirebaseRepo() product.Repository {
+func NewFirebaseRepo() Repository {
 	return &firebaseRepo{}
 }
 
@@ -79,8 +81,11 @@ func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int) (*mode
 			product = p
 		}
 	}
+
 	if product.ID == 0 {
-		return nil, nil
+		s := fmt.Sprintf("Item with ID: %v Not found.", productID)
+		log.Printf(s)
+		return nil, errors.New(s)
 	}
 	return &product, nil
 }

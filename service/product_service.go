@@ -5,16 +5,16 @@ import (
 	"time"
 
 	"github.com/sisimogangg/supermarket.products.api/models"
-	"github.com/sisimogangg/supermarket.products.api/product"
+	"github.com/sisimogangg/supermarket.products.api/repository"
 )
 
 type productService struct {
-	repo    product.Repository
+	repo    repository.Repository
 	timeout time.Duration
 }
 
 // NewProductService constructs a product service instance
-func NewProductService(repo product.Repository, timeout time.Duration) product.Service {
+func NewProductService(repo repository.Repository, timeout time.Duration) Service {
 	return &productService{repo, timeout}
 }
 
@@ -30,10 +30,6 @@ func (s *productService) GetProductByID(ctx context.Context, productID int) (*mo
 	p, err := s.repo.GetProductByID(ctx, productID)
 	if err != nil {
 		return nil, err
-	}
-
-	if p == nil {
-
 	}
 	return p, nil
 }
