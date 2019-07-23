@@ -2,11 +2,11 @@ package repository
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 
 	"github.com/sisimogangg/supermarket.products.api/models"
+	"github.com/sisimogangg/supermarket.products.api/utils"
 )
 
 type firebaseRepo struct{}
@@ -85,7 +85,7 @@ func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int) (*mode
 	if product.ID == 0 {
 		s := fmt.Sprintf("Item with ID: %v Not found.", productID)
 		log.Printf(s)
-		return nil, errors.New(s)
+		return nil, &utils.HTTPError{Status: 404, ErrorMsg: s}
 	}
 	return &product, nil
 }

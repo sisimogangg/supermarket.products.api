@@ -34,6 +34,7 @@ func (h *productHandler) allProducts(w http.ResponseWriter, r *http.Request) {
 	products, err := h.productService.AllProducts(ctx)
 	if err != nil {
 		u.Respond(w, u.Message(false, err.Error()))
+		return
 	}
 
 	resp := u.Message(true, "success")
@@ -48,6 +49,7 @@ func (h *productHandler) getProductByID(w http.ResponseWriter, r *http.Request) 
 	productID, err := strconv.Atoi(params["id"])
 	if err != nil {
 		u.Respond(w, u.Message(false, err.Error()))
+		return
 	}
 
 	ctx := r.Context()
@@ -57,7 +59,11 @@ func (h *productHandler) getProductByID(w http.ResponseWriter, r *http.Request) 
 
 	product, err := h.productService.GetProductByID(ctx, productID)
 	if err != nil {
+		if errVal, ok := err.(*u.HTTPError); ok {
+			w.WriteHeader(errVal.Status)
+		}
 		u.Respond(w, u.Message(false, err.Error()))
+		return
 	}
 
 	resp := u.Message(true, "success")

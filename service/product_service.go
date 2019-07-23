@@ -26,6 +26,7 @@ func (s *productService) AllProducts(ctx context.Context) ([]*models.Product, er
 
 	return ps, nil
 }
+
 func (s *productService) GetProductByID(ctx context.Context, productID int) (*models.Product, error) {
 	p, err := s.repo.GetProductByID(ctx, productID)
 	if err != nil {
