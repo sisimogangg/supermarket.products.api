@@ -21,7 +21,7 @@ func NewProductHandler(router *mux.Router, service service.Service) {
 	}
 
 	router.HandleFunc("/api/products", handler.allProducts).Methods("GET")
-	router.HandleFunc("/api/product/{id}", handler.getProductByID).Methods("GET")
+	router.HandleFunc("/api/products/{id}", handler.getProductByID).Methods("GET")
 
 }
 
