@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -60,7 +61,7 @@ var products = [...]models.Product{
 }
 
 // NewFirebaseRepo defines a constructor for firebaserepo
-func NewFirebaseRepo() Repository {
+func NewFirebaseRepo() DataAccessLayer {
 	return &firebaseRepo{}
 }
 
@@ -69,6 +70,10 @@ func (f *firebaseRepo) AllProducts(ctx context.Context) ([]*models.Product, erro
 	ps := make([]*models.Product, 0)
 	for _, p := range products {
 		ps = append(ps, &p)
+	}
+
+	if ps == nil {
+		return nil, errors.New("No items")
 	}
 	return ps, nil
 }

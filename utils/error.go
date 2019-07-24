@@ -9,5 +9,5 @@ type HTTPError struct {
 }
 
 func (h *HTTPError) Error() string {
-	return fmt.Sprintf("Error processing the request: code: %v,error: %v ", h.Status, h.ErrorMsg)
+	return fmt.Sprintf("Error processing the request. Server code: %v. Error: %v ", h.Status, h.ErrorMsg)
 }

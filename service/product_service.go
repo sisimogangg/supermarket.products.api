@@ -9,16 +9,18 @@ import (
 )
 
 type productService struct {
-	repo    repository.Repository
+	repo    repository.DataAccessLayer
 	timeout time.Duration
 }
 
 // NewProductService constructs a product service instance
-func NewProductService(repo repository.Repository, timeout time.Duration) Service {
+func NewProductService(repo repository.DataAccessLayer, timeout time.Duration) Service {
 	return &productService{repo, timeout}
 }
 
 func (s *productService) AllProducts(ctx context.Context) ([]*models.Product, error) {
+	time.Sleep(5 * time.Second)
+
 	ps, err := s.repo.AllProducts(ctx)
 	if err != nil {
 		return nil, err
