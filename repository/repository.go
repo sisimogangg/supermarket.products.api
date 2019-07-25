@@ -9,5 +9,5 @@ import (
 // DataAccessLayer defines expected repository behavour
 type DataAccessLayer interface {
 	AllProducts(ctx context.Context) ([]*models.Product, error)
-	GetProductByID(ctx context.Context, productID int) (*models.Product, error)
+	GetProductByID(ctx context.Context, productID int32) (*models.Product, error)
 }

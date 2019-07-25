@@ -57,7 +57,7 @@ func (h *productHandler) getProductByID(w http.ResponseWriter, r *http.Request) 
 		ctx = context.Background()
 	}
 
-	product, err := h.productService.GetProductByID(ctx, productID)
+	product, err := h.productService.GetProductByID(ctx, int32(productID))
 	if err != nil {
 		if errVal, ok := err.(*u.HTTPError); ok {
 			w.WriteHeader(errVal.Status)

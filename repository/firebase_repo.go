@@ -26,7 +26,6 @@ var products = [...]models.Product{
 			Currency: "RSA",
 			Amount:   2.00,
 		},
-		Promotion: "",
 	},
 	models.Product{
 		ID:       2,
@@ -41,7 +40,6 @@ var products = [...]models.Product{
 			Currency: "RSA",
 			Amount:   3.00,
 		},
-		Promotion: "",
 	},
 	models.Product{
 		ID:       3,
@@ -56,7 +54,6 @@ var products = [...]models.Product{
 			Currency: "RSA",
 			Amount:   4.00,
 		},
-		Promotion: "",
 	},
 }
 
@@ -79,7 +76,7 @@ func (f *firebaseRepo) AllProducts(ctx context.Context) ([]*models.Product, erro
 }
 
 //GetProductByID returns product given its ID
-func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int) (*models.Product, error) {
+func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int32) (*models.Product, error) {
 	product := models.Product{}
 	for _, p := range products {
 		if p.ID == productID {
