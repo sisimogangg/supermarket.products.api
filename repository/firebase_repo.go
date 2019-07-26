@@ -64,8 +64,9 @@ func NewFirebaseRepo() DataAccessLayer {
 
 //AllProducts returns all products
 func (f *firebaseRepo) AllProducts(ctx context.Context) ([]*models.Product, error) {
-	ps := make([]*models.Product, 0)
+	ps := []*models.Product{}
 	for _, p := range products {
+		p := p
 		ps = append(ps, &p)
 	}
 
