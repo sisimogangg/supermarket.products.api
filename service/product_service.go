@@ -3,10 +3,15 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"sync"
 	"time"
+
+	"github.com/spf13/viper"
 
 	"github.com/sisimogangg/supermarket.products.api/models"
 	"github.com/sisimogangg/supermarket.products.api/repository"
@@ -17,57 +22,118 @@ type productService struct {
 	timeout time.Duration
 }
 
+type discountCheck struct {
+	IsOnDiscount bool   `json:"isondiscount"`
+	ProductID    int32  `json:"productId"`
+	Message      string `json:"message"`
+	Status       bool   `json:"status"`
+}
+
 // NewProductService constructs a product service instance
 func NewProductService(repo repository.DataAccessLayer, timeout time.Duration) Service {
 	return &productService{repo, timeout}
 }
 
-func server(productID int32) (bool, error) {
-	ctx := context.Background()
-	ctx, cancel := context.WithTimeout(ctx, time.Second*3)
-	defer cancel()
+func contactDiscountServer(ctx context.Context, products []*models.Product) <-chan io.Reader {
+	chanReaders := make(chan io.Reader)
+	//defer close(chanReaders)
+	fmt.Println("contacting discount server")
 
-	URL := fmt.Sprintf("http://localhost:8080/api/discount/%v", productID)
-	req, err := http.NewRequest(http.MethodGet, URL, nil)
-	if err != nil {
-		log.Fatal(err)
+	var wg sync.WaitGroup
+	for _, p := range products {
+		p := p // avoid capturing this
+		wg.Add(1)
+		go func() {
+			fmt.Println("fetching discount for : ", p.ID)
+			URL := fmt.Sprintf("%s%v", viper.GetString("discount.verify"), p.ID)
+
+			req, err := http.NewRequest(http.MethodGet, URL, nil)
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+
+			req = req.WithContext(ctx)
+			res, err := http.DefaultClient.Do(req)
+			if err != nil {
+				log.Fatal(err)
+				return
+			}
+
+			if res.StatusCode != http.StatusOK {
+				log.Fatal(errors.New(res.Status))
+			}
+
+			select {
+			case chanReaders <- res.Body:
+				fmt.Println("fetched for : ", p.ID)
+			case <-ctx.Done():
+				log.Fatal(errors.New("request Cancelled"))
+			}
+			wg.Done()
+		}()
 	}
 
-	req = req.WithContext(ctx)
+	go func() {
+		wg.Wait()
+		close(chanReaders)
+	}()
+	return chanReaders
+}
 
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		log.Fatal(err)
+func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis chan<- discountCheck) {
+	for r := range chanReaders {
+		results := discountCheck{}
+
+		err := json.NewDecoder(r).Decode(&results)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		select {
+		case chanDis <- results:
+		case <-ctx.Done():
+			log.Fatal(errors.New("Request Cancelled"))
+			return
+		}
 	}
-
-	if res.StatusCode != http.StatusOK {
-		log.Fatal(res.Status)
-	}
-
-	type response struct {
-		IsOnDiscount bool
-		Message      string
-		Status       bool
-	}
-
-	results := response{}
-
-	err = json.NewDecoder(res.Body).Decode(&results)
-	if err != nil {
-		return false, err
-	}
-
-	return results.IsOnDiscount, nil
 }
 
 func (s *productService) retrieveDiscounts(ctx context.Context, products []*models.Product) ([]*models.Product, error) {
-	for _, p := range products {
 
-		dis, err := server(p.ID)
-		if err != nil {
-			return nil, err
+	//mapResponseToProductIDs := map[int32]interface{}{}
+	mapResponseToProductIDs := make(map[int32]bool)
+	for _, p := range products {
+		mapResponseToProductIDs[p.ID] = false
+	}
+
+	chanReaders := contactDiscountServer(ctx, products)
+	chanDis := make(chan discountCheck)
+
+	var wg sync.WaitGroup
+	const num = 10
+
+	wg.Add(num)
+	for i := 0; i < num; i++ {
+		go func() {
+			readResponse(ctx, chanReaders, chanDis)
+			wg.Done()
+		}()
+	}
+
+	go func() {
+		wg.Wait()
+		close(chanDis)
+	}()
+
+	for d := range chanDis {
+		mapResponseToProductIDs[d.ProductID] = d.IsOnDiscount
+	}
+
+	for _, p := range products {
+		if isOnDiscount, ok := mapResponseToProductIDs[p.ID]; ok {
+			p.IsOnDiscount = isOnDiscount
 		}
-		p.IsOnDiscount = dis
 	}
 	return products, nil
 }

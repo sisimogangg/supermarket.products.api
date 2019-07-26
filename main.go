@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -38,12 +37,7 @@ func main() {
 
 	controller.NewProductHandler(router, service)
 
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8090"
-	}
-
-	err := http.ListenAndServe(":"+port, router)
+	err := http.ListenAndServe(viper.GetString("server.address"), router)
 	if err != nil {
 		fmt.Print(err)
 	}

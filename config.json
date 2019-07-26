@@ -3,6 +3,9 @@
     "server": {
       "address": ":9090"
     },
+    "discount":{
+      "verify": "http://localhost:8080/api/discount/verify/"
+    },
     "context":{
       "timeout":50
     },
