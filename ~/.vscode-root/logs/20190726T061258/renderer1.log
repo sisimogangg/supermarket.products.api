@@ -1,0 +1,22 @@
+[2019-07-26 06:13:45.565] [renderer1] [error] Error: [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/thubelihle/repos/vue/supermarket/.vscode'
+[2019-07-26 06:13:45.565] [renderer1] [error] [File Watcher (node.js)] Error: ENOENT: no such file or directory, stat '/home/thubelihle/repos/vue/supermarket/.vscode'
+[2019-07-26 06:18:42.016] [renderer1] [warning] UNRESPONSIVE extension host, 'odubuc.mysql-inline-decorator' took 100% of 5129.759ms, saved PROFILE here: '/tmp/exthost-a5af9f.cpuprofile' [{"id":"odubuc.mysql-inline-decorator","total":5129606,"percentage":100}]
+[2019-07-26 06:18:43.126] [renderer1] [error] Server returned 422
+[2019-07-26 08:00:40.538] [renderer1] [error] name must not be falsy: Error: name must not be falsy
+	at Function.validate (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:346:965)
+	at new C (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:346:914)
+	at new C (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:335:813)
+	at asSymbolInformation (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:411:22)
+	at values.map.information (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:400:42)
+	at Array.map (<anonymous>)
+	at Object.asSymbolInformations (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:400:23)
+	at registerLanguageProvider.client.sendRequest.then (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:1005:62)
+[2019-07-26 08:12:45.475] [renderer1] [error] name must not be falsy: Error: name must not be falsy
+	at Function.validate (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:346:965)
+	at new C (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:346:914)
+	at new C (/usr/share/code/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:335:813)
+	at asSymbolInformation (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:411:22)
+	at values.map.information (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:400:42)
+	at Array.map (<anonymous>)
+	at Object.asSymbolInformations (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/protocolConverter.js:400:23)
+	at registerLanguageProvider.client.sendRequest.then (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:1005:62)

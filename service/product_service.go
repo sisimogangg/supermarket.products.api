@@ -1,13 +1,13 @@
 package service
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"sync"
 	"time"
 
@@ -15,6 +15,7 @@ import (
 
 	"github.com/sisimogangg/supermarket.products.api/models"
 	"github.com/sisimogangg/supermarket.products.api/repository"
+	"github.com/sisimogangg/supermarket.products.api/utils"
 )
 
 type productService struct {
@@ -34,39 +35,24 @@ func NewProductService(repo repository.DataAccessLayer, timeout time.Duration) S
 	return &productService{repo, timeout}
 }
 
-func contactDiscountServer(ctx context.Context, products []*models.Product) <-chan io.Reader {
+func checkDiscountsOnServer(ctx context.Context, products []*models.Product) <-chan io.Reader {
 	chanReaders := make(chan io.Reader)
-	//defer close(chanReaders)
-	fmt.Println("contacting discount server")
 
 	var wg sync.WaitGroup
 	for _, p := range products {
 		p := p // avoid capturing this
 		wg.Add(1)
 		go func() {
-			fmt.Println("fetching discount for : ", p.ID)
 			URL := fmt.Sprintf("%s%v", viper.GetString("discount.verify"), p.ID)
 
-			req, err := http.NewRequest(http.MethodGet, URL, nil)
+			body, err := utils.GetRequest(ctx, URL)
 			if err != nil {
 				log.Fatal(err)
 				return
-			}
-
-			req = req.WithContext(ctx)
-			res, err := http.DefaultClient.Do(req)
-			if err != nil {
-				log.Fatal(err)
-				return
-			}
-
-			if res.StatusCode != http.StatusOK {
-				log.Fatal(errors.New(res.Status))
 			}
 
 			select {
-			case chanReaders <- res.Body:
-				fmt.Println("fetched for : ", p.ID)
+			case chanReaders <- *body:
 			case <-ctx.Done():
 				log.Fatal(errors.New("request Cancelled"))
 			}
@@ -99,7 +85,7 @@ func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis cha
 	}
 }
 
-func (s *productService) retrieveDiscounts(ctx context.Context, products []*models.Product) ([]*models.Product, error) {
+func (s *productService) checkForProductDiscounts(ctx context.Context, products []*models.Product) ([]*models.Product, error) {
 
 	//mapResponseToProductIDs := map[int32]interface{}{}
 	mapResponseToProductIDs := make(map[int32]bool)
@@ -107,7 +93,7 @@ func (s *productService) retrieveDiscounts(ctx context.Context, products []*mode
 		mapResponseToProductIDs[p.ID] = false
 	}
 
-	chanReaders := contactDiscountServer(ctx, products)
+	chanReaders := checkDiscountsOnServer(ctx, products)
 	chanDis := make(chan discountCheck)
 
 	var wg sync.WaitGroup
@@ -132,7 +118,7 @@ func (s *productService) retrieveDiscounts(ctx context.Context, products []*mode
 
 	for _, p := range products {
 		if isOnDiscount, ok := mapResponseToProductIDs[p.ID]; ok {
-			p.IsOnDiscount = isOnDiscount
+			p.Discount = bool(isOnDiscount)
 		}
 	}
 	return products, nil
@@ -146,7 +132,7 @@ func (s *productService) AllProducts(ctx context.Context) ([]*models.Product, er
 		return nil, err
 	}
 
-	products, err := s.retrieveDiscounts(ctx, ps)
+	products, err := s.checkForProductDiscounts(ctx, ps)
 	if err != nil {
 		return nil, err
 	}
@@ -159,5 +145,25 @@ func (s *productService) GetProductByID(ctx context.Context, productID int32) (*
 	if err != nil {
 		return nil, err
 	}
+
+	URL := fmt.Sprintf("%s%v", viper.GetString("discount.discount"), p.ID)
+	body, err := utils.GetRequest(ctx, URL)
+	if err != nil {
+		log.Fatal(err)
+		return p, nil
+	}
+
+	var m map[string]interface{}
+
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(*body)
+	err = json.Unmarshal(buf.Bytes(), &m)
+	if err != nil {
+		log.Fatal(err)
+		return p, nil
+	}
+
+	p.Discount = m
+
 	return p, nil
 }

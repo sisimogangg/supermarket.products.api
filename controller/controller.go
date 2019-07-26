@@ -37,6 +37,8 @@ func (h *productHandler) allProducts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	u.EnableCors(&w)
+
 	resp := u.Message(true, "success")
 	resp["products"] = products
 
@@ -56,6 +58,8 @@ func (h *productHandler) getProductByID(w http.ResponseWriter, r *http.Request) 
 	if ctx != nil {
 		ctx = context.Background()
 	}
+
+	u.EnableCors(&w)
 
 	product, err := h.productService.GetProductByID(ctx, int32(productID))
 	if err != nil {

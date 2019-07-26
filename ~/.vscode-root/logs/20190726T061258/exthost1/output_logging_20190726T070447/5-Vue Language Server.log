@@ -1,0 +1,175 @@
+Loaded bundled typescript@3.3.4000.
+Vetur initialized
+/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint/lib/linter.js:906
+            throw err;
+            ^
+
+TypeError: Cannot read property 'references' of null
+    at getVForUsingIterationVar (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:32:33)
+    at isUsingIterationVar (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:27:12)
+    at EventEmitter.VAttribute[directive=true][key.name='if'] (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:77:15)
+    at EventEmitter.emit (events.js:187:15)
+    at NodeEventGenerator.applySelector (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3128:26)
+    at NodeEventGenerator.applySelectors (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3142:22)
+    at NodeEventGenerator.enterNode (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3150:14)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:110:13)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:117:21)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:122:13)
+[Info  - 08:00:47] Connection to server got closed. Server will restart.
+[Error - 08:00:47] Request textDocument/codeAction failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+Loaded bundled typescript@3.3.4000.
+Vetur initialized
+/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint/lib/linter.js:906
+            throw err;
+            ^
+
+TypeError: Cannot read property 'references' of null
+    at getVForUsingIterationVar (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:32:33)
+    at isUsingIterationVar (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:27:12)
+    at EventEmitter.VAttribute[directive=true][key.name='if'] (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/lib/rules/no-use-v-if-with-v-for.js:77:15)
+    at EventEmitter.emit (events.js:187:15)
+    at NodeEventGenerator.applySelector (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3128:26)
+    at NodeEventGenerator.applySelectors (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3142:22)
+    at NodeEventGenerator.enterNode (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:3150:14)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:110:13)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:117:21)
+    at traverse (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/server/node_modules/eslint-plugin-vue/node_modules/vue-eslint-parser/index.js:122:13)
+[Info  - 08:00:50] Connection to server got closed. Server will restart.
+[Error - 08:00:50] Request textDocument/codeAction failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/documentLink failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/colorPresentation failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/codeAction failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/documentSymbol failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/documentLink failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+[Error - 08:00:50] Request textDocument/colorPresentation failed.
+Error: Connection got disposed.
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:876:25)
+	at Object.dispose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:71:35)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2167:42)
+	at LanguageClient.handleConnectionClosed (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/main.js:152:15)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-languageclient/lib/client.js:2154:18)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at closeHandler (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/main.js:226:26)
+	at CallbackList.invoke (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:62:39)
+	at Emitter.fire (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/events.js:120:36)
+	at IPCMessageReader.fireClose (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:111:27)
+	at ChildProcess.constructor.eventEmitter.on (/home/thubelihle/.vscode/extensions/octref.vetur-0.21.1/node_modules/vscode-jsonrpc/lib/messageReader.js:213:45)
+	at ChildProcess.emit (events.js:187:15)
+	at maybeClose (internal/child_process.js:962:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+Loaded bundled typescript@3.3.4000.
+Vetur initialized
+{ parser: "babylon" } is deprecated; we now treat it as { parser: "babel" }.

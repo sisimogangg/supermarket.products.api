@@ -4,7 +4,8 @@
       "address": ":9090"
     },
     "discount":{
-      "verify": "http://localhost:8080/api/discount/verify/"
+      "verify": "http://localhost:8080/api/discount/verify/",
+      "discount": "http://localhost:8080/api/discount/"
     },
     "context":{
       "timeout":50
