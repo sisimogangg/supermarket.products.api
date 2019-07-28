@@ -3,11 +3,11 @@ package repository
 import (
 	"context"
 
-	"github.com/sisimogangg/supermarket.products.api/models"
+	"github.com/sisimogangg/supermarket.products.api/model"
 )
 
 // DataAccessLayer defines expected repository behavour
 type DataAccessLayer interface {
-	AllProducts(ctx context.Context) ([]*models.Product, error)
-	GetProductByID(ctx context.Context, productID int32) (*models.Product, error)
+	List(ctx context.Context) ([]*model.Product, error)
+	Get(ctx context.Context, productID string) (*model.Detail, error)
 }

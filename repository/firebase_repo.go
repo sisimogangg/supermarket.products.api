@@ -4,91 +4,56 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
-	"github.com/sisimogangg/supermarket.products.api/models"
-	"github.com/sisimogangg/supermarket.products.api/utils"
+	firebase "firebase.google.com/go"
+	"github.com/sisimogangg/supermarket.products.api/model"
 )
 
-type firebaseRepo struct{}
-
-var products = [...]models.Product{
-	models.Product{
-		ID:       1,
-		ImageURL: "https://images.unsplash.com/photo-1478004521390-655bd10c9f43?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-		Name:     "Apple",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "2.00",
-		},
-	},
-	models.Product{
-		ID:       2,
-		ImageURL: "https://images.unsplash.com/photo-1528825871115-3581a5387919?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=658&q=80",
-		Name:     "Banana",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "3.00",
-		},
-	},
-	models.Product{
-		ID:       3,
-		ImageURL: "https://images.unsplash.com/photo-1560769680-ba2f3767c785?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjExMDk0fQ&auto=format&fit=crop&w=700&q=80",
-		Name:     "Coconut",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "4.00",
-		},
-	},
+type firebaseRepo struct {
+	fb *firebase.App
 }
 
 // NewFirebaseRepo defines a constructor for firebaserepo
-func NewFirebaseRepo() DataAccessLayer {
-	return &firebaseRepo{}
+func NewFirebaseRepo(app *firebase.App) DataAccessLayer {
+	return &firebaseRepo{app}
 }
 
-//AllProducts returns all products
-func (f *firebaseRepo) AllProducts(ctx context.Context) ([]*models.Product, error) {
-	ps := []*models.Product{}
-	for _, p := range products {
-		p := p
-		ps = append(ps, &p)
+//List returns all products
+func (f *firebaseRepo) List(ctx context.Context) ([]*model.Product, error) {
+	client, err := f.fb.Database(ctx)
+	productsRef := client.NewRef("products")
+	if err != nil {
+		return nil, err // internal server error
 	}
 
-	if ps == nil {
+	products := []*model.Product{}
+	var rawResult map[string]model.Product
+
+	err = productsRef.Get(ctx, &rawResult)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range rawResult {
+		products = append(products, &v)
+	}
+
+	if products == nil {
 		return nil, errors.New("No items")
 	}
-	return ps, nil
+	return products, nil
 }
 
-//GetProductByID returns product given its ID
-func (f *firebaseRepo) GetProductByID(ctx context.Context, productID int32) (*models.Product, error) {
-	product := models.Product{}
-	for _, p := range products {
-		if p.ID == productID {
-			product = p
-		}
+// Get returns product given its ID
+func (f *firebaseRepo) Get(ctx context.Context, productID string) (*model.Detail, error) {
+	client, err := f.fb.Database(ctx)
+	if err != nil {
+		return nil, err // internal server error
 	}
 
-	if product.ID == 0 {
-		s := fmt.Sprintf("Item with ID: %v Not found.", productID)
-		log.Printf(s)
-		return nil, &utils.HTTPError{Status: 404, ErrorMsg: s}
+	product := model.Detail{}
+	if err := client.NewRef(fmt.Sprintf("details/%s", productID)).Get(ctx, &product); err != nil {
+		return nil, err
 	}
 	return &product, nil
 }

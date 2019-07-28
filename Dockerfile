@@ -15,7 +15,6 @@ COPY config.json /usr/bin/config.json
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix nocgo -o /usr/bin/server 
 
-
 FROM alpine:3.9.4
 
 COPY --from=build /usr/bin/server /root/

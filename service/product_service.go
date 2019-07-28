@@ -1,7 +1,6 @@
 package service
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -13,7 +12,7 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/sisimogangg/supermarket.products.api/models"
+	"github.com/sisimogangg/supermarket.products.api/model"
 	"github.com/sisimogangg/supermarket.products.api/repository"
 	"github.com/sisimogangg/supermarket.products.api/utils"
 )
@@ -35,7 +34,7 @@ func NewProductService(repo repository.DataAccessLayer, timeout time.Duration) S
 	return &productService{repo, timeout}
 }
 
-func checkDiscountsOnServer(ctx context.Context, products []*models.Product) <-chan io.Reader {
+func checkDiscountsOnServer(ctx context.Context, products []*model.Product) <-chan io.Reader {
 	chanReaders := make(chan io.Reader)
 
 	var wg sync.WaitGroup
@@ -85,7 +84,7 @@ func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis cha
 	}
 }
 
-func (s *productService) checkForProductDiscounts(ctx context.Context, products []*models.Product) ([]*models.Product, error) {
+func (s *productService) checkForProductDiscounts(ctx context.Context, products []*model.Product) ([]*model.Product, error) {
 
 	//mapResponseToProductIDs := map[int32]interface{}{}
 	mapResponseToProductIDs := make(map[int32]bool)
@@ -124,46 +123,28 @@ func (s *productService) checkForProductDiscounts(ctx context.Context, products 
 	return products, nil
 }
 
-func (s *productService) AllProducts(ctx context.Context) ([]*models.Product, error) {
+func (s *productService) List(ctx context.Context) ([]*model.Product, error) {
 	time.Sleep(5 * time.Second)
 
-	ps, err := s.repo.AllProducts(ctx)
+	ps, err := s.repo.List(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	products, err := s.checkForProductDiscounts(ctx, ps)
-	if err != nil {
-		return nil, err
-	}
+	/*	products, err := s.checkForProductDiscounts(ctx, ps)
+		if err != nil {
+			return nil, err
+		}
 
-	return products, nil
+		return products, nil */
+	return ps, nil
 }
 
-func (s *productService) GetProductByID(ctx context.Context, productID int32) (*models.Product, error) {
-	p, err := s.repo.GetProductByID(ctx, productID)
+func (s *productService) Get(ctx context.Context, productID string) (*model.Detail, error) {
+	p, err := s.repo.Get(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
-
-	URL := fmt.Sprintf("%s%v", viper.GetString("discount.discount"), p.ID)
-	body, err := utils.GetRequest(ctx, URL)
-	if err != nil {
-		log.Fatal(err)
-		return p, nil
-	}
-
-	var m map[string]interface{}
-
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(*body)
-	err = json.Unmarshal(buf.Bytes(), &m)
-	if err != nil {
-		log.Fatal(err)
-		return p, nil
-	}
-
-	p.Discount = m
 
 	return p, nil
 }
