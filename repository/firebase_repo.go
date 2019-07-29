@@ -6,8 +6,14 @@ import (
 	"fmt"
 
 	firebase "firebase.google.com/go"
-	"github.com/sisimogangg/supermarket.products.api/model"
+	pb "github.com/sisimogangg/supermarket.products.api/proto"
 )
+
+// DataAccessLayer defines repository expected behaviour
+type DataAccessLayer interface {
+	List(ctx context.Context) ([]*pb.Product, error)
+	Get(ctx context.Context, productID string) (*pb.ProductDetail, error)
+}
 
 type firebaseRepo struct {
 	fb *firebase.App
@@ -19,15 +25,15 @@ func NewFirebaseRepo(app *firebase.App) DataAccessLayer {
 }
 
 //List returns all products
-func (f *firebaseRepo) List(ctx context.Context) ([]*model.Product, error) {
+func (f *firebaseRepo) List(ctx context.Context) ([]*pb.Product, error) {
 	client, err := f.fb.Database(ctx)
 	productsRef := client.NewRef("products")
 	if err != nil {
 		return nil, err // internal server error
 	}
 
-	products := []*model.Product{}
-	var rawResult map[string]model.Product
+	products := []*pb.Product{}
+	var rawResult map[string]pb.Product
 
 	err = productsRef.Get(ctx, &rawResult)
 	if err != nil {
@@ -45,13 +51,13 @@ func (f *firebaseRepo) List(ctx context.Context) ([]*model.Product, error) {
 }
 
 // Get returns product given its ID
-func (f *firebaseRepo) Get(ctx context.Context, productID string) (*model.Detail, error) {
+func (f *firebaseRepo) Get(ctx context.Context, productID string) (*pb.ProductDetail, error) {
 	client, err := f.fb.Database(ctx)
 	if err != nil {
 		return nil, err // internal server error
 	}
 
-	product := model.Detail{}
+	product := pb.ProductDetail{}
 	if err := client.NewRef(fmt.Sprintf("details/%s", productID)).Get(ctx, &product); err != nil {
 		return nil, err
 	}

@@ -4,20 +4,20 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	firebase "firebase.google.com/go"
-	"github.com/gorilla/mux"
 	"google.golang.org/api/option"
 
+	"github.com/micro/go-micro"
 	"github.com/spf13/viper"
 
-	"github.com/sisimogangg/supermarket.products.api/handler"
-	"github.com/sisimogangg/supermarket.products.api/model"
+	pb "github.com/sisimogangg/supermarket.products.api/proto"
 	_repo "github.com/sisimogangg/supermarket.products.api/repository"
-	_service "github.com/sisimogangg/supermarket.products.api/service"
+	"github.com/sisimogangg/supermarket.products.api/service"
 	"github.com/sisimogangg/supermarket.products.api/utils"
+
+	_ "github.com/micro/go-micro/registry/mdns"
 )
 
 func init() {
@@ -39,7 +39,7 @@ func seeding(app *firebase.App) {
 		log.Fatal(err)
 	}
 
-	var rawProducts map[string]model.Product
+	var rawProducts map[string]pb.Product
 	err = client.NewRef("products").Get(ctx, &rawProducts)
 	if err != nil {
 		log.Fatal(err)
@@ -47,13 +47,13 @@ func seeding(app *firebase.App) {
 
 	if len(rawProducts) == 0 {
 		for _, p := range utils.Products {
-			if err := client.NewRef(fmt.Sprintf("products/%d", p.ID)).Set(ctx, p); err != nil {
+			if err := client.NewRef(fmt.Sprintf("products/%s", p.Id)).Set(ctx, p); err != nil {
 				log.Fatal(err)
 			}
 		}
 
 		for _, d := range utils.Details {
-			if err := client.NewRef(fmt.Sprintf("details/%d", d.ID)).Set(ctx, d); err != nil {
+			if err := client.NewRef(fmt.Sprintf("details/%s", d.Product.Id)).Set(ctx, d); err != nil {
 				log.Fatal(err)
 			}
 		}
@@ -77,7 +77,12 @@ func initializeFirebase() *firebase.App {
 }
 
 func main() {
-	router := mux.NewRouter()
+	srv := micro.NewService(
+		micro.Name("supermarket.product"),
+		micro.Version("latest"),
+	)
+
+	srv.Init()
 
 	app := initializeFirebase()
 	repo := _repo.NewFirebaseRepo(app)
@@ -88,13 +93,19 @@ func main() {
 
 	timeContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
 
-	service := _service.NewProductService(repo, timeContext)
+	service := &service.ProductService{Repo: repo, Timeout: timeContext}
 
-	handler.NewHandler(router, service)
+	pb.RegisterProductServiceHandler(srv.Server(), service)
+
+	// Run the server
+	if err := srv.Run(); err != nil {
+		fmt.Println(err)
+	}
+	/*handler.NewHandler(router, service)
 
 	err := http.ListenAndServe(viper.GetString("server.address"), router)
 	if err != nil {
 		fmt.Print(err)
-	}
+	} */
 
 }

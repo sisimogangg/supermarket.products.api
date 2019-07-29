@@ -1,65 +1,63 @@
 package utils
 
-import "github.com/sisimogangg/supermarket.products.api/model"
+import pb "github.com/sisimogangg/supermarket.products.api/proto"
+
+var price1 = pb.Price{
+	Symbol:   "R",
+	Currency: "RSA",
+	Amount:   "2.00",
+}
+
+var price2 = pb.Price{
+	Symbol:   "R",
+	Currency: "RSA",
+	Amount:   "3.00",
+}
+
+var price3 = pb.Price{
+	Symbol:   "R",
+	Currency: "RSA",
+	Amount:   "4.00",
+}
 
 // Products is a seed of products
-var Products = []*model.Product{
-	&model.Product{
-		ID:       100,
+var Products = []*pb.Product{
+	&pb.Product{
+		Id:       "100",
 		ImageURL: "https://images.unsplash.com/photo-1478004521390-655bd10c9f43?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
 		Name:     "Apple",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "2.00",
-		},
+		Discount: false,
+		Price:    &price1,
 	},
-	&model.Product{
-		ID:       200,
+	&pb.Product{
+		Id:       "200",
 		ImageURL: "https://images.unsplash.com/photo-1528825871115-3581a5387919?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=658&q=80",
 		Name:     "Banana",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "3.00",
-		},
+		Discount: false,
+		Price:    &price2,
 	},
-	&model.Product{
-		ID:       300,
+	&pb.Product{
+		Id:       "300",
 		ImageURL: "https://images.unsplash.com/photo-1560769680-ba2f3767c785?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjExMDk0fQ&auto=format&fit=crop&w=700&q=80",
 		Name:     "Coconut",
-		Price: struct {
-			Symbol   string `json:"symbol"`
-			Currency string `json:"currency"`
-			Amount   string `json:"amount"`
-		}{
-			Symbol:   "R",
-			Currency: "RSA",
-			Amount:   "4.00",
-		},
+		Discount: false,
+		Price:    &price3,
 	},
 }
 
 // Details stores product details seeding data
-var Details = []*model.Detail{
-	&model.Detail{
+var Details = []*pb.ProductDetail{
+	&pb.ProductDetail{
 		Description: "Class 1, Top Red Apples, sweet and crispy.",
-		Product:     *Products[0],
+		Discount:    nil,
+		Product:     Products[0],
 	},
-	&model.Detail{
+	&pb.ProductDetail{
 		Description: "Class 1, Easy-to-peel fresh, ripe Bananas.",
-		Product:     *Products[1],
+		Product:     Products[1],
 	},
-	&model.Detail{
+	&pb.ProductDetail{
 		Description: "Our coconuts can be eaten fresh or used for baking",
-		Product:     *Products[2],
+		Product:     Products[2],
 	},
 }

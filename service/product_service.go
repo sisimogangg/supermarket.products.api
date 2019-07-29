@@ -7,19 +7,21 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"strconv"
 	"sync"
 	"time"
 
 	"github.com/spf13/viper"
 
-	"github.com/sisimogangg/supermarket.products.api/model"
+	pb "github.com/sisimogangg/supermarket.products.api/proto"
 	"github.com/sisimogangg/supermarket.products.api/repository"
 	"github.com/sisimogangg/supermarket.products.api/utils"
 )
 
-type productService struct {
-	repo    repository.DataAccessLayer
-	timeout time.Duration
+// ProductService stores items required to implement the proto server interface
+type ProductService struct {
+	Repo    repository.DataAccessLayer
+	Timeout time.Duration
 }
 
 type discountCheck struct {
@@ -29,12 +31,7 @@ type discountCheck struct {
 	Status       bool   `json:"status"`
 }
 
-// NewProductService constructs a product service instance
-func NewProductService(repo repository.DataAccessLayer, timeout time.Duration) Service {
-	return &productService{repo, timeout}
-}
-
-func checkDiscountsOnServer(ctx context.Context, products []*model.Product) <-chan io.Reader {
+func checkDiscountsOnServer(ctx context.Context, products []*pb.Product) <-chan io.Reader {
 	chanReaders := make(chan io.Reader)
 
 	var wg sync.WaitGroup
@@ -42,7 +39,7 @@ func checkDiscountsOnServer(ctx context.Context, products []*model.Product) <-ch
 		p := p // avoid capturing this
 		wg.Add(1)
 		go func() {
-			URL := fmt.Sprintf("%s%v", viper.GetString("discount.verify"), p.ID)
+			URL := fmt.Sprintf("%s%v", viper.GetString("discount.verify"), p.Id)
 
 			body, err := utils.GetRequest(ctx, URL)
 			if err != nil {
@@ -84,12 +81,16 @@ func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis cha
 	}
 }
 
-func (s *productService) checkForProductDiscounts(ctx context.Context, products []*model.Product) ([]*model.Product, error) {
+func (s *ProductService) checkForProductDiscounts(ctx context.Context, products []*pb.Product) ([]*pb.Product, error) {
 
 	//mapResponseToProductIDs := map[int32]interface{}{}
 	mapResponseToProductIDs := make(map[int32]bool)
 	for _, p := range products {
-		mapResponseToProductIDs[p.ID] = false
+		index, err := strconv.Atoi(p.Id)
+		if err != nil {
+			return nil, err
+		}
+		mapResponseToProductIDs[int32(index)] = false
 	}
 
 	chanReaders := checkDiscountsOnServer(ctx, products)
@@ -116,19 +117,23 @@ func (s *productService) checkForProductDiscounts(ctx context.Context, products 
 	}
 
 	for _, p := range products {
-		if isOnDiscount, ok := mapResponseToProductIDs[p.ID]; ok {
+		index, err := strconv.Atoi(p.Id)
+		if err != nil {
+			return nil, err
+		}
+		if isOnDiscount, ok := mapResponseToProductIDs[int32(index)]; ok {
 			p.Discount = bool(isOnDiscount)
 		}
 	}
 	return products, nil
 }
 
-func (s *productService) List(ctx context.Context) ([]*model.Product, error) {
-	time.Sleep(5 * time.Second)
+// List returns a list of products
+func (s *ProductService) List(ctx context.Context, req *pb.ListRequest, resp *pb.ListResponse) error {
 
-	ps, err := s.repo.List(ctx)
+	ps, err := s.Repo.List(ctx)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	/*	products, err := s.checkForProductDiscounts(ctx, ps)
@@ -137,14 +142,21 @@ func (s *productService) List(ctx context.Context) ([]*model.Product, error) {
 		}
 
 		return products, nil */
-	return ps, nil
+	resp.Products = ps
+
+	return nil
 }
 
-func (s *productService) Get(ctx context.Context, productID string) (*model.Detail, error) {
-	p, err := s.repo.Get(ctx, productID)
+// Get returns product details
+func (s *ProductService) Get(ctx context.Context, req *pb.GetRequest, resp *pb.ProductDetail) error {
+	p, err := s.Repo.Get(ctx, req.Id)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return p, nil
+	resp.Description = p.Description
+	resp.Discount = p.Discount
+	resp.Product = p.Product
+
+	return nil
 }
