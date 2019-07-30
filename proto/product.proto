@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package products;
+package product;
 
 service ProductService{
     rpc List(ListRequest) returns (ListResponse){}

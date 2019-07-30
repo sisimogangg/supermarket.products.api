@@ -1,24 +1,24 @@
 FROM golang:latest AS build
 
-WORKDIR  $GOPATH/src/github.com/sisimogangg/supermarket.products.api
-
-RUN go get -u github.com/golang/dep/cmd/dep
+WORKDIR /go/src/github.com/sisimogangg/supermarket.products.api
 
 COPY . .
 
-RUN dep init
+RUN go get -u github.com/golang/dep/cmd/dep
+RUN dep  ensure -v
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o products-api
 
-RUN dep ensure 
-
-COPY config.json /usr/bin/config.json 
-
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix nocgo -o /usr/bin/products.api 
 
 FROM alpine:3.9.4
 
-COPY --from=build /usr/bin/products.api /root/
-COPY --from=build /usr/bin/config.json /root/
+RUN apk add ca-certificates
 
-WORKDIR /root/
+RUN mkdir /app
+WORKDIR /app
 
-CMD ["./products.api"]
+COPY config.json .
+COPY firebaseServiceAccount.json .
+COPY --from=build /go/src/github.com/sisimogangg/supermarket.products.api/products-api .
+
+
+CMD ["./products-api"]
