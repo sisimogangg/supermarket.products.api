@@ -92,20 +92,13 @@ func main() {
 	}
 
 	timeContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
+	productService := service.NewProductService(repo, timeContext)
+	//service := &service.ProductService{Repo: repo, Timeout: timeContext}
 
-	service := &service.ProductService{Repo: repo, Timeout: timeContext}
-
-	pb.RegisterProductServiceHandler(srv.Server(), service)
+	pb.RegisterProductServiceHandler(srv.Server(), productService)
 
 	// Run the server
 	if err := srv.Run(); err != nil {
 		fmt.Println(err)
 	}
-	/*handler.NewHandler(router, service)
-
-	err := http.ListenAndServe(viper.GetString("server.address"), router)
-	if err != nil {
-		fmt.Print(err)
-	} */
-
 }

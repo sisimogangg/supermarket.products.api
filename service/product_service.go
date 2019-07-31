@@ -18,10 +18,14 @@ import (
 	"github.com/sisimogangg/supermarket.products.api/utils"
 )
 
-// ProductService stores items required to implement the proto server interface
-type ProductService struct {
-	Repo    repository.DataAccessLayer
+type productService struct {
+	Repo    repository.Repository
 	Timeout time.Duration
+}
+
+// NewProductService creates and returns a new instance of productService
+func NewProductService(repo repository.Repository, timeout time.Duration) pb.ProductServiceHandler {
+	return &productService{repo, timeout}
 }
 
 type discountCheck struct {
@@ -81,7 +85,7 @@ func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis cha
 	}
 }
 
-func (s *ProductService) checkForProductDiscounts(ctx context.Context, products []*pb.Product) ([]*pb.Product, error) {
+func (s *productService) checkForProductDiscounts(ctx context.Context, products []*pb.Product) ([]*pb.Product, error) {
 
 	//mapResponseToProductIDs := map[int32]interface{}{}
 	mapResponseToProductIDs := make(map[int32]bool)
@@ -129,7 +133,7 @@ func (s *ProductService) checkForProductDiscounts(ctx context.Context, products 
 }
 
 // List returns a list of products
-func (s *ProductService) List(ctx context.Context, req *pb.ListRequest, resp *pb.ListResponse) error {
+func (s *productService) List(ctx context.Context, req *pb.ListRequest, resp *pb.ListResponse) error {
 
 	ps, err := s.Repo.List(ctx)
 	if err != nil {
@@ -148,7 +152,7 @@ func (s *ProductService) List(ctx context.Context, req *pb.ListRequest, resp *pb
 }
 
 // Get returns product details
-func (s *ProductService) Get(ctx context.Context, req *pb.GetRequest, resp *pb.ProductDetail) error {
+func (s *productService) Get(ctx context.Context, req *pb.GetRequest, resp *pb.ProductDetail) error {
 	p, err := s.Repo.Get(ctx, req.Id)
 	if err != nil {
 		return err
