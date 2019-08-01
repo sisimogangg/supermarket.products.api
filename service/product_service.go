@@ -38,7 +38,7 @@ type discountCheck struct {
 	Status       bool   `json:"status"`
 }
 
-func checkDiscountsOnServer(ctx context.Context, products []*pb.Product) <-chan io.Reader {
+func retrieveDiscountsFromServer(ctx context.Context, products []*pb.Product) <-chan io.Reader {
 	chanReaders := make(chan io.Reader)
 
 	var wg sync.WaitGroup
@@ -88,7 +88,7 @@ func readResponse(ctx context.Context, chanReaders <-chan io.Reader, chanDis cha
 	}
 }
 
-func (s *productService) checkForProductDiscounts(ctx context.Context, products []*pb.Product) ([]*pb.Product, error) {
+func (s *productService) getProductDiscounts(ctx context.Context, products []*pb.Product) ([]*pb.Product, error) {
 
 	//mapResponseToProductIDs := map[int32]interface{}{}
 	mapResponseToProductIDs := make(map[int32]bool)
@@ -100,7 +100,7 @@ func (s *productService) checkForProductDiscounts(ctx context.Context, products 
 		mapResponseToProductIDs[int32(index)] = false
 	}
 
-	chanReaders := checkDiscountsOnServer(ctx, products)
+	chanReaders := retrieveDiscountsFromServer(ctx, products)
 	chanDis := make(chan discountCheck)
 
 	var wg sync.WaitGroup
