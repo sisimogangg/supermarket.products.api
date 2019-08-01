@@ -13,19 +13,22 @@ import (
 
 	"github.com/spf13/viper"
 
+	discountProto "github.com/sisimogangg/supermarket.discount.api/proto"
 	pb "github.com/sisimogangg/supermarket.products.api/proto"
+
 	"github.com/sisimogangg/supermarket.products.api/repository"
 	"github.com/sisimogangg/supermarket.products.api/utils"
 )
 
 type productService struct {
-	Repo    repository.Repository
-	Timeout time.Duration
+	Repo           repository.Repository
+	discountClient discountProto.DiscountServiceClient
+	Timeout        time.Duration
 }
 
 // NewProductService creates and returns a new instance of productService
-func NewProductService(repo repository.Repository, timeout time.Duration) pb.ProductServiceHandler {
-	return &productService{repo, timeout}
+func NewProductService(repo repository.Repository, timeout time.Duration, ds discountProto.DiscountServiceClient) pb.ProductServiceHandler {
+	return &productService{repo, ds, timeout}
 }
 
 type discountCheck struct {

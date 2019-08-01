@@ -12,7 +12,9 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/spf13/viper"
 
+	discountProto "github.com/sisimogangg/supermarket.discount.api/proto"
 	pb "github.com/sisimogangg/supermarket.products.api/proto"
+
 	_repo "github.com/sisimogangg/supermarket.products.api/repository"
 	"github.com/sisimogangg/supermarket.products.api/service"
 	"github.com/sisimogangg/supermarket.products.api/utils"
@@ -92,8 +94,9 @@ func main() {
 	}
 
 	timeContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
-	productService := service.NewProductService(repo, timeContext)
-	//service := &service.ProductService{Repo: repo, Timeout: timeContext}
+
+	discountClient := discountProto.NewDiscountServiceClient("supermarket.discount.client", srv.Client()) //shippy.service.client
+	productService := service.NewProductService(repo, discountClient, timeContext)
 
 	pb.RegisterProductServiceHandler(srv.Server(), productService)
 
