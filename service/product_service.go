@@ -143,12 +143,23 @@ func (s *productService) List(ctx context.Context, req *pb.ListRequest, resp *pb
 		return err
 	}
 
-	/*	products, err := s.checkForProductDiscounts(ctx, ps)
-		if err != nil {
-			return nil, err
-		}
+	for _, p := range ps {
+		p := p
+		go func() {
+			getReq := discountProto.GetRequest{ProductID: p.Id}
+			discount, err := s.discountClient.Get(ctx, &getReq)
+			if err != nil {
+				return
+			}
 
-		return products, nil */
+			if len(discount.DiscountID) > 0 {
+				p.Discount = true
+			} else {
+				p.Discount = false
+			}
+		}()
+	}
+
 	resp.Products = ps
 
 	return nil
@@ -162,7 +173,17 @@ func (s *productService) Get(ctx context.Context, req *pb.GetRequest, resp *pb.P
 	}
 
 	resp.Description = p.Description
-	resp.Discount = p.Discount
+
+	getReq := discountProto.GetRequest{ProductID: req.Id}
+	discount, err := s.discountClient.Get(ctx, &getReq)
+	if err != nil {
+		return nil
+	}
+
+	if len(discount.DiscountID) > 0 {
+		resp.Discount.DiscountID = discount.DiscountID
+		resp.Discount.Summary = discount.Summary
+	}
 	resp.Product = p.Product
 
 	return nil
