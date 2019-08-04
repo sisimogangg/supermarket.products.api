@@ -31,7 +31,6 @@ func (f *firebaseRepo) List(ctx context.Context) ([]*pb.Product, error) {
 	}
 	productsRef := client.NewRef("products")
 
-	products := []*pb.Product{}
 	var rawResult map[string]pb.Product
 
 	err = productsRef.Get(ctx, &rawResult)
@@ -39,6 +38,7 @@ func (f *firebaseRepo) List(ctx context.Context) ([]*pb.Product, error) {
 		return nil, err
 	}
 
+	products := []*pb.Product{}
 	for _, v := range rawResult {
 		products = append(products, &v)
 	}

@@ -22,12 +22,12 @@ import (
 
 type productService struct {
 	Repo           repository.Repository
-	discountClient discountProto.DiscountServiceClient
+	DiscountClient discountProto.DiscountServiceClient
 	Timeout        time.Duration
 }
 
 // NewProductService creates and returns a new instance of productService
-func NewProductService(repo repository.Repository, timeout time.Duration, ds discountProto.DiscountServiceClient) pb.ProductServiceHandler {
+func NewProductService(repo repository.Repository, ds discountProto.DiscountServiceClient, timeout time.Duration) pb.ProductServiceHandler {
 	return &productService{repo, ds, timeout}
 }
 
@@ -142,24 +142,28 @@ func (s *productService) List(ctx context.Context, req *pb.ListRequest, resp *pb
 	if err != nil {
 		return err
 	}
+	wg := sync.WaitGroup{}
 
-	for _, p := range ps {
-		p := p
-		go func() {
-			getReq := discountProto.GetRequest{ProductID: p.Id}
-			discount, err := s.discountClient.Get(ctx, &getReq)
-			if err != nil {
-				return
-			}
+	//for _, p := range ps {
+	p := ps[0]
+	wg.Add(1)
+	go func() {
+		getReq := discountProto.GetRequest{ProductID: p.Id}
+		discount, err := s.DiscountClient.Get(ctx, &getReq)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-			if len(discount.DiscountID) > 0 {
-				p.Discount = true
-			} else {
-				p.Discount = false
-			}
-		}()
-	}
+		if len(discount.DiscountID) > 0 {
+			p.Discount = true
+		} else {
+			p.Discount = false
+		}
+		wg.Done()
+	}()
+	//}
 
+	wg.Wait()
 	resp.Products = ps
 
 	return nil
@@ -175,7 +179,7 @@ func (s *productService) Get(ctx context.Context, req *pb.GetRequest, resp *pb.P
 	resp.Description = p.Description
 
 	getReq := discountProto.GetRequest{ProductID: req.Id}
-	discount, err := s.discountClient.Get(ctx, &getReq)
+	discount, err := s.DiscountClient.Get(ctx, &getReq)
 	if err != nil {
 		return nil
 	}

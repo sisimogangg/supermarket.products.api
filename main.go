@@ -79,6 +79,9 @@ func initializeFirebase() *firebase.App {
 }
 
 func main() {
+	// create a context
+	timeContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
+
 	srv := micro.NewService(
 		micro.Name("supermarket.product"),
 		micro.Version("latest"),
@@ -93,9 +96,7 @@ func main() {
 		seeding(app)
 	}
 
-	timeContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
-
-	discountClient := discountProto.NewDiscountServiceClient("supermarket.discount.client", srv.Client()) //shippy.service.client
+	discountClient := discountProto.NewDiscountServiceClient("supermarket.discount", srv.Client()) //shippy.service.client
 	productService := service.NewProductService(repo, discountClient, timeContext)
 
 	pb.RegisterProductServiceHandler(srv.Server(), productService)
