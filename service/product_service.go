@@ -142,28 +142,29 @@ func (s *productService) List(ctx context.Context, req *pb.ListRequest, resp *pb
 	if err != nil {
 		return err
 	}
+
+	// check if discount is available
 	wg := sync.WaitGroup{}
+	for _, p := range ps {
+		p := p
+		wg.Add(1)
+		go func() {
+			getReq := discountProto.GetRequest{ProductID: p.Id}
+			discount, err := s.DiscountClient.Get(ctx, &getReq)
+			if err != nil {
+				log.Fatal(err)
+			}
 
-	//for _, p := range ps {
-	p := ps[0]
-	wg.Add(1)
-	go func() {
-		getReq := discountProto.GetRequest{ProductID: p.Id}
-		discount, err := s.DiscountClient.Get(ctx, &getReq)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if len(discount.DiscountID) > 0 {
-			p.Discount = true
-		} else {
-			p.Discount = false
-		}
-		wg.Done()
-	}()
-	//}
-
+			if len(discount.DiscountID) > 0 {
+				p.Discount = true
+			} else {
+				p.Discount = false
+			}
+			wg.Done()
+		}()
+	}
 	wg.Wait()
+
 	resp.Products = ps
 
 	return nil
